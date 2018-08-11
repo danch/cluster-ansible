@@ -1,0 +1,24 @@
+- name: Add docker yum repository
+  become: yes
+  command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: Install docker
+  become: yes
+  yum:
+    name: docker-ce
+    state: present
+
+- name: install docker-compose
+  become: yes
+  shell: curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+
+- name: set docker-compose executable
+  become: yes
+  file: dest=/usr/local/bin/docker-compose mode=a+x
+
+- name: enable and run dockerd
+  become: yes
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
