@@ -31,6 +31,7 @@
     reload: yes
 
 - name open kube ports in firewall
+  become: yes
   firewalld:
     immediate: true
     permanent: true
@@ -41,41 +42,49 @@
     permanent: true
     port: 2379-2380/tcp
     source: 192.168.1.0/24
+  become: yes
 - firewalld:
     immediate: true
     permanent: true
     port: 10250/tcp
     source: 192.168.1.0/24
+  become: yes
 - firewalld:
     immediate: true
     permanent: true
     port: 10251/tcp
     source: 192.168.1.0/24
+  become: yes
 - firewalld:
     immediate: true
     permanent: true
     port: 10252/tcp
     source: 192.168.1.0/24
+  become: yes
 - firewalld:
     immediate: true
     permanent: true
     port: 10255/tcp
     source: 192.168.1.0/24
+  become: yes
 - firewalld:
     immediate: true
     permanent: true
     port: 10256/tcp
     source: 192.168.1.0/24
+  become: yes
 - firewalld:
     immediate: true
     permanent: true
     port: 8285/udp
     source: 192.168.1.0/24
+  become: yes
 - firewalld:
     immediate: true
     permanent: true
     port: 8472/udp
     source: 192.168.1.0/24
+  become: yes
 
 - name: install base kubernetes tools
   become: true

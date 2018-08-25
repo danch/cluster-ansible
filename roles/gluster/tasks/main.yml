@@ -1,15 +1,18 @@
 ---
 - name: ensure filesystems are prepared
+  become: true
   filesystem:
     dev: "{{gluster_dev}}"
     fstype: "xfs"
 
 - name: create mount points
+  become: true
   file:
     path: /data/brick1
     state: directory
 
 - name: mount brick
+  become: true
   mount:
     path: /data/brick1
     fstype: xfs
@@ -17,6 +20,7 @@
     backup: yes
     
 - name: open gluster specific ports in the firewall
+  become: true
   firewalld:
     immediate: true
     permanent: true
@@ -27,16 +31,19 @@
     permanent: true
     port: 111/udp
     source: 192.168.1.0/24
+  become: true
 - firewalld:
     immediate: true
     permanent: true
     port: 24007/tcp
     source: 192.168.1.0/24
+  become: true
 - firewalld:
     immediate: true
     permanent: true
     port: 49152-50000/tcp
     source: 192.168.1.0/24
+  become: true
 
 - name: Add gluster yum repository
   become: yes

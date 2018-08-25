@@ -1,5 +1,6 @@
 ---
 - name: peer-probe all gluster peers
+  become: yes
   command: "gluster peer probe {{item}}"
     when: "{{item != inventory_hostname}}"
   with_items: "{{groups.gluster.hosts}}"

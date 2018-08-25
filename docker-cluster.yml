@@ -1,9 +1,10 @@
 ---
 - hosts: all
-  systemd:
-    name: firewalld
-    enabled: yes
-    state: started
+  tasks:
+    systemd:
+      name: firewalld
+      enabled: yes
+      state: started
   
 - hosts: gluster
   roles:
@@ -18,3 +19,4 @@
 - hosts: docker
   roles:
     - docker
+    - kubernetes
