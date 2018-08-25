@@ -18,48 +18,53 @@
     fstype: xfs
     src: "{{gluster_dev}}"
     backup: yes
+    state: mounted
     
 - name: open gluster specific ports in the firewall
   become: true
   firewalld:
-    immediate: true
+#    immediate: true
     permanent: true
     port: 111/tcp
     source: 192.168.1.0/24
+    state: enabled
 - firewalld:
-    immediate: true
+#    immediate: true
     permanent: true
     port: 111/udp
     source: 192.168.1.0/24
+    state: enabled
   become: true
 - firewalld:
-    immediate: true
+#    immediate: true
     permanent: true
     port: 24007/tcp
     source: 192.168.1.0/24
+    state: enabled
   become: true
 - firewalld:
-    immediate: true
+#    immediate: true
     permanent: true
     port: 49152-50000/tcp
     source: 192.168.1.0/24
+    state: enabled
   become: true
 
 - name: Add gluster yum repository
-  become: yes
+  become: true
   yum:
     name: centos-release-gluster
     state: present
 
 - name: Install gluster
-  become: yes
+  become: true
   yum:
-    name: glusterfs,gluster-cli,glusterfs-libs,glusterfs-server
+    name: glusterfs,glusterfs-server
     state: present
 
 - name: enable and start glusterd
-  become: yes
+  become: true
   systemd:
     name: glusterd
     state: started
-    enabled: yes
+    enabled: true

@@ -3,7 +3,7 @@
   become: true
   copy:
     src: kubernetes.repo
-    des: /etc/yum.repos.d/kubernetes.repo
+    dest: /etc/yum.repos.d/kubernetes.repo
 
 #- name: disable selinux
 #  selinux:
@@ -16,6 +16,7 @@
     name: swap
     fstype: swap
     state: absent
+  become: true
 
 - name: ensure bridge-nf-call is enabled
   become: true
@@ -29,62 +30,72 @@
     value: 1
     state: present
     reload: yes
+  become: true
 
-- name open kube ports in firewall
-  become: yes
+- name: open kube ports in firewall
+  become: true
   firewalld:
-    immediate: true
+#    immediate: true
     permanent: true
     port: 6443/tcp
     source: 192.168.1.0/24
+    state: enabled
 - firewalld:
-    immediate: true
+#    immediate: true
     permanent: true
     port: 2379-2380/tcp
     source: 192.168.1.0/24
-  become: yes
+    state: enabled
+  become: true
 - firewalld:
-    immediate: true
+##    immediate: true
     permanent: true
     port: 10250/tcp
     source: 192.168.1.0/24
-  become: yes
+    state: enabled
+  become: true
 - firewalld:
-    immediate: true
+#    immediate: true
     permanent: true
     port: 10251/tcp
     source: 192.168.1.0/24
-  become: yes
+    state: enabled
+  become: true
 - firewalld:
-    immediate: true
+#    immediate: true
     permanent: true
     port: 10252/tcp
     source: 192.168.1.0/24
-  become: yes
+    state: enabled
+  become: true
 - firewalld:
-    immediate: true
+#    immediate: true
     permanent: true
     port: 10255/tcp
     source: 192.168.1.0/24
-  become: yes
+    state: enabled
+  become: true
 - firewalld:
-    immediate: true
+#    immediate: true
     permanent: true
     port: 10256/tcp
     source: 192.168.1.0/24
-  become: yes
+    state: enabled
+  become: true
 - firewalld:
-    immediate: true
+#    immediate: true
     permanent: true
     port: 8285/udp
     source: 192.168.1.0/24
-  become: yes
+    state: enabled
+  become: true
 - firewalld:
-    immediate: true
+#    immediate: true
     permanent: true
     port: 8472/udp
     source: 192.168.1.0/24
-  become: yes
+    state: enabled
+  become: true
 
 - name: install base kubernetes tools
   become: true
@@ -93,7 +104,7 @@
     state: present
 
 - name: enable kube services
-  become: yes
+  become: true
   systemd:
     name: kubelet
     state: started

@@ -1,3 +1,9 @@
+- name: ensure yum-config-manager is available
+  become: yes
+  yum:
+    name: yum-utils
+    state: present
+
 - name: Add docker yum repository
   become: yes
   command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo

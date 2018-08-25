@@ -1,10 +1,11 @@
 ---
 - hosts: all
   tasks:
-    systemd:
+  - systemd:
       name: firewalld
-      enabled: yes
-      state: started
+      enabled: no
+      state: stopped
+    become: yes
   
 - hosts: gluster
   roles:
@@ -12,7 +13,7 @@
 
 - hosts: gluster
   tasks:
-    include_role: 
+  - include_role: 
       name: gluster
       tasks_from: peer_probe.yml
 
