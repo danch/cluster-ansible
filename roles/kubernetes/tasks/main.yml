@@ -1,0 +1,91 @@
+
+- name: add the kubernetes repo
+  become: true
+  copy:
+    src: kubernetes.repo
+    des: /etc/yum.repos.d/kubernetes.repo
+
+#- name: disable selinux
+#  selinux:
+#    state: disabled
+
+- name: disable swap
+  become: true
+  command: swapoff -a
+- mount:
+    name: swap
+    fstype: swap
+    state: absent
+
+- name: ensure bridge-nf-call is enabled
+  become: true
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: 1
+    state: present
+    reload: yes
+- sysctl:
+    name: net.bridge.bridge-nf-call-ip6tables
+    value: 1
+    state: present
+    reload: yes
+
+- name open kube ports in firewall
+  firewalld:
+    immediate: true
+    permanent: true
+    port: 6443/tcp
+    source: 192.168.1.0/24
+- firewalld:
+    immediate: true
+    permanent: true
+    port: 2379-2380/tcp
+    source: 192.168.1.0/24
+- firewalld:
+    immediate: true
+    permanent: true
+    port: 10250/tcp
+    source: 192.168.1.0/24
+- firewalld:
+    immediate: true
+    permanent: true
+    port: 10251/tcp
+    source: 192.168.1.0/24
+- firewalld:
+    immediate: true
+    permanent: true
+    port: 10252/tcp
+    source: 192.168.1.0/24
+- firewalld:
+    immediate: true
+    permanent: true
+    port: 10255/tcp
+    source: 192.168.1.0/24
+- firewalld:
+    immediate: true
+    permanent: true
+    port: 10256/tcp
+    source: 192.168.1.0/24
+- firewalld:
+    immediate: true
+    permanent: true
+    port: 8285/udp
+    source: 192.168.1.0/24
+- firewalld:
+    immediate: true
+    permanent: true
+    port: 8472/udp
+    source: 192.168.1.0/24
+
+- name: install base kubernetes tools
+  become: true
+  yum:
+    name: kubelet,kubeadm,kubectl
+    state: present
+
+- name: enable kube services
+  become: yes
+  systemd:
+    name: kubelet
+    state: started
+    enabled: true 

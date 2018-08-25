@@ -1,0 +1,58 @@
+---
+- name: ensure filesystems are prepared
+  filesystem:
+    dev: "{{gluster_dev}}"
+    fstype: "xfs"
+
+- name: create mount points
+  file:
+    path: /data/brick1
+    state: directory
+
+- name: mount brick
+  mount:
+    path: /data/brick1
+    fstype: xfs
+    src: "{{gluster_dev}}"
+    backup: yes
+    
+- name: open gluster specific ports in the firewall
+  firewalld:
+    immediate: true
+    permanent: true
+    port: 111/tcp
+    source: 192.168.1.0/24
+- firewalld:
+    immediate: true
+    permanent: true
+    port: 111/udp
+    source: 192.168.1.0/24
+- firewalld:
+    immediate: true
+    permanent: true
+    port: 24007/tcp
+    source: 192.168.1.0/24
+- firewalld:
+    immediate: true
+    permanent: true
+    port: 49152-50000/tcp
+    source: 192.168.1.0/24
+
+- name: Add gluster yum repository
+  become: yes
+  yum:
+    name: centos-release-gluster
+    state: present
+
+- name: Install gluster
+  become: yes
+  yum:
+    name: glusterfs,gluster-cli,glusterfs-libs,glusterfs-server
+    state: present
+
+- name: enable and start glusterd
+  become: yes
+  systemd:
+    name: glusterd
+    state: started
+    enabled: yes

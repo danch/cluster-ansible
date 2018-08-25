@@ -2,4 +2,11 @@ all:
   children:
     docker:
       hosts:
-        localhost:
+        opti:
+        congratulations:
+    gluster:
+      hosts:
+        opti:
+          gluster_dev: /dev/sdb1
+        congratulations:
+          gluster_dev: /dev/sdb1

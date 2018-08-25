@@ -1,4 +1,20 @@
 ---
+- hosts: all
+  systemd:
+    name: firewalld
+    enabled: yes
+    state: started
+  
+- hosts: gluster
+  roles:
+    - gluster
+
+- hosts: gluster
+  tasks:
+    include_role: 
+      name: gluster
+      tasks_from: peer_probe.yml
+
 - hosts: docker
   roles:
     - docker
