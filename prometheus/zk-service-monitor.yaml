@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: zk-kafka-metric
+  namespace: rook
+  labels:
+    team: rook
+spec:
+  namespaceSelector:
+    matchNames:
+      - kafka-test
+  selector:
+    matchLabels:
+      app: zk
+  endpoints:
+  - port: metrics
+    path: /metrics
+    interval: 15s

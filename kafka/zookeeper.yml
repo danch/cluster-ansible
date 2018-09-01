@@ -29,6 +29,20 @@ spec:
   selector:
     app: zk
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kafka-test
+  name: zk-kafka-metric
+  labels:
+    app: zk
+spec:
+  ports:
+  - port: 7071
+    name: metrics
+  selector:
+    app: zk
+---
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
@@ -72,7 +86,7 @@ spec:
       containers:
       - name: kubernetes-zookeeper
         imagePullPolicy: IfNotPresent
-        image: "k8s.gcr.io/kubernetes-zookeeper:1.0-3.4.10"
+        image: "grumpydanch/zookeeper-prometheus:0.1.1"
         resources:
           requests:
             memory: "1Gi"
@@ -84,6 +98,9 @@ spec:
           name: server
         - containerPort: 3888
           name: leader-election
+        env:
+        - name: "SERVER_JVMFLAGS"
+          value: "-javaagent:/opt/jmx_prometheus_javaagent-0.3.1.jar=7071:/opt/zookeeper.yaml"
         command:
         - sh
         - -c
@@ -105,22 +122,22 @@ spec:
           --max_session_timeout=40000 \
           --min_session_timeout=4000 \
           --log_level=DEBUG"
-#        readinessProbe:
-#          exec:
-#            command:
-#            - sh
-#            - -c
-#            - "zookeeper-ready 2181"
-#          initialDelaySeconds: 10
-#          timeoutSeconds: 5
-#        livenessProbe:
-#          exec:
-#            command:
-#            - sh
-#            - -c
-#            - "zookeeper-ready 2181"
-#          initialDelaySeconds: 10
-#          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "zookeeper-ready 2181"
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "zookeeper-ready 2181"
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
         volumeMounts:
         - name: datadir
           mountPath: /var/lib/zookeeper
