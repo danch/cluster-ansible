@@ -1,19 +1,18 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: rook-ceph-mgr
-  namespace: rook
+  name: zk-kafka-metric
+  namespace: monitoring
   labels:
     team: rook
 spec:
   namespaceSelector:
     matchNames:
-      - rook
+      - kafka-test
   selector:
     matchLabels:
-      app: rook-ceph-mgr
-      rook_cluster: rook
+      app: zk
   endpoints:
-  - port: http-metrics
+  - port: metrics
     path: /metrics
-    interval: 5s
+    interval: 15s
