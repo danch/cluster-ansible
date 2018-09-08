@@ -2,9 +2,9 @@
 
 # Get OSD Pods
 # This uses the example/default cluster name "rook"
-#OSD_PODS=$(kubectl get pods --all-namespaces -l \
-#  app=rook-ceph-osd,rook_cluster=rook -o jsonpath='{.items[*].metadata.name}')
-OSD_PODS="rook-ceph-osd-congratulations-zlxfx rook-ceph-osd-opti-jfcv6"
+OSD_PODS=$(kubectl get pods --all-namespaces -l \
+  app=rook-ceph-osd,rook_cluster=rook -o jsonpath='{.items[*].metadata.name}')
+#OSD_PODS="rook-ceph-osd-congratulations-zlxfx rook-ceph-osd-opti-jfcv6"
 
 # Find node and drive associations from OSD pods
 for pod in $(echo ${OSD_PODS})

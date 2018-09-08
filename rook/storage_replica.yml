@@ -2,6 +2,8 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
    name: replica
-provisioner: rook.io/block
+provisioner: ceph.rook.io/block
 parameters:
   pool: replica-pool
+  clusterNamespace: rook-ceph
+  fstype: xfs

@@ -89,7 +89,7 @@ spec:
         image: "grumpydanch/zookeeper-prometheus:0.1.1"
         resources:
           requests:
-            memory: "1Gi"
+            memory: "512Mi"
             cpu: "0.1"
         ports:
         - containerPort: 2181
