@@ -108,7 +108,7 @@ spec:
         command:
         - sh
         - -c
-        - "KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-${HOSTNAME##*-}.kafka-broker:9092 KAFKA_BROKER_ID=${HOSTNAME##*-} /etc/confluent/docker/run"
+        - "KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-${HOSTNAME##*-}.kafka-broker.kafka-test.svc.cluster.local:9092 KAFKA_BROKER_ID=${HOSTNAME##*-} /etc/confluent/docker/run"
         volumeMounts:
         - name: datadir
           mountPath: /var/lib/kafka
