@@ -1,12 +1,12 @@
 all:
   children:
-    docker:
+    kube:
       hosts:
         opti:
         congratulations:
-    gluster:
+        rice:
+    proxy:
       hosts:
         opti:
-          gluster_dev: /dev/sdb1
         congratulations:
-          gluster_dev: /dev/sdb1
+        rice:

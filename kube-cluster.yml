@@ -7,17 +7,11 @@
       state: stopped
     become: yes
   
-- hosts: gluster
+- hosts: proxy
   roles:
-    - gluster
+    - proxy
 
-- hosts: gluster
-  tasks:
-  - include_role: 
-      name: gluster
-      tasks_from: peer_probe.yml
-
-- hosts: docker
+- hosts: kube
   roles:
     - docker
     - kubernetes

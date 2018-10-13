@@ -1,0 +1,67 @@
+
+- name: install haproxy
+  become: yes
+  yum:
+    name: haproxy
+    state: latest
+
+- name: install keepalived
+  become: yes
+  yum:
+    name: keepalived
+    state: latest
+
+- name: keepalived config
+  become: yes
+  copy:
+    src: files/keepalived-{{inventory_hostname}}.conf
+    dest: /etc/keepalived/keepalived.conf
+    mode: 0644
+
+- name: keepalived daemon
+  become: yes
+  systemd:
+    name: keepalived
+    enabled: yes
+    state: started
+
+- name: haproxy config
+  become: yes
+  copy:
+    src: files/haproxy-{{inventory_hostname}}.cfg
+    dest: /etc/haproxy/haproxy.cfg
+    mode: 0644
+
+- name: firewall config
+  become: yes
+  firewalld:
+    port: 6443/tcp
+    permanent: true
+    state: enabled
+
+- name: reload firewall config
+  become: yes
+  systemd:
+    name: firewalld
+    state: restarted
+
+- name: Ensure libsemanage-python installed
+  become: yes
+  package:
+    name: libsemanage-python
+    state: latest
+
+- name: SELinux - allow haproxy to bind all
+  become: yes
+  seboolean:
+    name: haproxy_connect_any
+    state: yes
+    persistent: yes
+
+- name: haproxy daemon
+  become: yes
+  systemd:
+    name: haproxy
+    enabled: yes
+    state: restarted
+
