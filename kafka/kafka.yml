@@ -71,16 +71,16 @@ spec:
       labels:
         app: kafka
     spec:
-#      affinity:
-#        podAntiAffinity:
-#          requiredDuringSchedulingIgnoredDuringExecution:
-#            - labelSelector:
-#                matchExpressions:
-#                  - key: "app"
-#                    operator: In
-#                    values:
-#                    - zk
-#              topologyKey: "kubernetes.io/hostname"
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - kafka
+              topologyKey: "kubernetes.io/hostname"
       containers:
       - name: kafka-broker
         imagePullPolicy: IfNotPresent
@@ -121,7 +121,7 @@ spec:
       namespace: kafka-test
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: noreplica
+      storageClassName: general
       resources:
         requests:
           storage: 100Gi
