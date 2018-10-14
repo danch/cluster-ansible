@@ -3,8 +3,8 @@
   tasks:
   - systemd:
       name: firewalld
-      enabled: no
-      state: stopped
+      enabled: yes
+      state: started
     become: yes
   
 - hosts: proxy
@@ -15,3 +15,7 @@
   roles:
     - docker
     - kubernetes
+
+- hosts: kube
+  roles:
+    - kubeadm-ha

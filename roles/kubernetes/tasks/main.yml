@@ -5,9 +5,10 @@
     src: kubernetes.repo
     dest: /etc/yum.repos.d/kubernetes.repo
 
-#- name: disable selinux
-#  selinux:
-#    state: disabled
+- name: disable selinux
+  become: true
+  selinux:
+    state: disabled
 
 - name: disable swap
   become: true
@@ -96,11 +97,30 @@
     source: 192.168.1.0/24
     state: enabled
   become: true
+- firewalld:
+#    immediate: true
+    permanent: true
+    interface: docker0
+    zone: trusted
+    state: enabled
+  become: true
 
-- name: install base kubernetes tools
+- name: install kubelet
   become: true
   yum:
-    name: kubelet,kubeadm,kubectl
+    name: kubelet-1.12.1
+    state: present
+
+- name: install kubeadm
+  become: true
+  yum:
+    name: kubeadm-1.12.1
+    state: present
+
+- name: install kubectl
+  become: true
+  yum:
+    name: kubectl-1.12.1
     state: present
 
 - name: enable kube services

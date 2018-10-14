@@ -11,16 +11,16 @@
 - name: Install docker
   become: yes
   yum:
-    name: docker-ce
+    name: docker-ce-18.06.1.ce-3.el7
     state: present
 
-- name: install docker-compose
-  become: yes
-  shell: curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+    #- name: install docker-compose
+    #  become: yes
+    #  shell: curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 
-- name: set docker-compose executable
-  become: yes
-  file: dest=/usr/local/bin/docker-compose mode=a+x
+    #- name: set docker-compose executable
+    #  become: yes
+    #  file: dest=/usr/local/bin/docker-compose mode=a+x
 
 - name: enable and run dockerd
   become: yes
