@@ -3,10 +3,10 @@
   tasks:
   - systemd:
       name: firewalld
-      enabled: yes
-      state: started
+      enabled: no
+      state: stopped
     become: yes
-  
+
 - hosts: proxy
   roles:
     - proxy
