@@ -56,7 +56,7 @@ spec:
   storage:
     volumeClaimTemplate:
       spec:
-        storageClassName: noreplica
+        storageClassName: general
         resources:
           requests:
             storage: 50Gi

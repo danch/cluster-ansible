@@ -1,8 +1,0 @@
-apiVersion: ceph.rook.io/v1beta1
-kind: Pool
-metadata:
-  name: noreplica-pool
-  namespace: rook-ceph
-spec:
-  replicated:
-    size: 1

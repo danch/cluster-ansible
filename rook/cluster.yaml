@@ -31,8 +31,8 @@ roleRef:
   name: rook-ceph-cluster-mgmt
 subjects:
 - kind: ServiceAccount
-  name: rook-ceph-system
-  namespace: rook-ceph-system
+  name: rook-ceph-sys
+  namespace: rook-ceph-sys
 ---
 # Allow the pods in this namespace to work with configmaps
 kind: RoleBinding
@@ -121,5 +121,8 @@ spec:
       devices: # specific devices to use for storage can be specified for each node
       - name: "sdb"
     - name: "congratulations"
+      devices: # specific devices to use for storage can be specified for each node
+      - name: "sdb"
+    - name: "rice"
       devices: # specific devices to use for storage can be specified for each node
       - name: "sdb"

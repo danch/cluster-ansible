@@ -6,7 +6,7 @@
       enabled: no
       state: stopped
     become: yes
-  
+
 - hosts: proxy
   roles:
     - proxy
@@ -15,3 +15,7 @@
   roles:
     - docker
     - kubernetes
+
+- hosts: kube
+  roles:
+    - kubeadm-ha

@@ -2,14 +2,14 @@
 - name: install haproxy
   become: yes
   yum:
-    name: haproxy
-    state: latest
+    name: haproxy-1.5.18
+    state: present
 
 - name: install keepalived
   become: yes
   yum:
-    name: keepalived
-    state: latest
+    name: keepalived-1.3.5
+    state: present
 
 - name: keepalived config
   become: yes
@@ -32,12 +32,19 @@
     dest: /etc/haproxy/haproxy.cfg
     mode: 0644
 
-- name: firewall config
+- name: firewall rule for lb port
   become: yes
   firewalld:
-    port: 6443/tcp
+    port: 6445/tcp
     permanent: true
     state: enabled
+
+- name: firewall rule for keepalived
+  become: yes
+  command: "firewall-cmd --direct --permanent --add-rule ipv4 filter INPUT 0 --in-interface {{host_interface}} --destination 224.0.0.18 --protocol vrrp -j ACCEPT"
+
+- become: yes
+  command: "firewall-cmd --direct --permanent --add-rule ipv4 filter OUTPUT 0 --out-interface {{host_interface}} --destination 224.0.0.18 --protocol vrrp -j ACCEPT"
 
 - name: reload firewall config
   become: yes
@@ -47,9 +54,9 @@
 
 - name: Ensure libsemanage-python installed
   become: yes
-  package:
-    name: libsemanage-python
-    state: latest
+  yum:
+    name: libsemanage-python-2.5
+    state: present
 
 - name: SELinux - allow haproxy to bind all
   become: yes

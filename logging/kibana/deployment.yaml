@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kibana
+  labels:
+    app: kibana
+    stack: logging
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: kibana
+        stack: logging
+    spec:
+      containers:
+      - name: kibana
+        image: docker.elastic.co/kibana/kibana-oss:6.4.2
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: ELASTICSEARCH_PASSWORD
+          value: changeme
+        ports:
+        - containerPort: 5601
+        resources: 
+          requests:
+            memory: 256m 
+            cpu: 100m
+        volumeMounts:
+        - name: config
+          mountPath: /usr/share/kibana/kibana.yml
+          subPath: kibana.yml
+      restartPolicy: Always
+      volumes:
+      - name: config
+        configMap:
+          name: kibana
