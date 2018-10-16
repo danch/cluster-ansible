@@ -39,18 +39,18 @@
     permanent: true
     state: enabled
 
-- name: firewall rule for keepalived
-  become: yes
-  command: "firewall-cmd --direct --permanent --add-rule ipv4 filter INPUT 0 --in-interface {{host_interface}} --destination 224.0.0.18 --protocol vrrp -j ACCEPT"
+    #- name: firewall rule for keepalived
+    #  become: yes
+    #  command: "firewall-cmd --direct --permanent --add-rule ipv4 filter INPUT 0 --in-interface {{host_interface}} --destination 224.0.0.18 --protocol vrrp -j ACCEPT"
 
-- become: yes
-  command: "firewall-cmd --direct --permanent --add-rule ipv4 filter OUTPUT 0 --out-interface {{host_interface}} --destination 224.0.0.18 --protocol vrrp -j ACCEPT"
+    #- become: yes
+    #  command: "firewall-cmd --direct --permanent --add-rule ipv4 filter OUTPUT 0 --out-interface {{host_interface}} --destination 224.0.0.18 --protocol vrrp -j ACCEPT"
 
-- name: reload firewall config
-  become: yes
-  systemd:
-    name: firewalld
-    state: restarted
+    #- name: reload firewall config
+    #  become: yes
+    #  systemd:
+    #    name: firewalld
+    #    state: restarted
 
 - name: Ensure libsemanage-python installed
   become: yes
@@ -58,12 +58,12 @@
     name: libsemanage-python-2.5
     state: present
 
-- name: SELinux - allow haproxy to bind all
-  become: yes
-  seboolean:
-    name: haproxy_connect_any
-    state: yes
-    persistent: yes
+    #- name: SELinux - allow haproxy to bind all
+    #  become: yes
+    #  seboolean:
+    #    name: haproxy_connect_any
+    #    state: yes
+    #    persistent: yes
 
 - name: haproxy daemon
   become: yes

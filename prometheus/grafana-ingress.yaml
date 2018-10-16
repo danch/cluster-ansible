@@ -1,12 +1,12 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: test-ingress
+  name: grafana
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - http:
+  - host: grafana.danch.home
+    http:
       paths:
       - path: /
         backend:
