@@ -11,6 +11,7 @@ spec:
   ports:
   - name: "api"
     port: 9200
+    nodePort: 30920
     targetPort: 9200
   selector:
     app: elasticsearch
