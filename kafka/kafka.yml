@@ -96,12 +96,14 @@ spec:
           value: "PLAINTEXT://broker:9092"
         - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
           value: "3"
+        - name: KAFKA_LOG4J_ROOT_LOGLEVEL
+          value: "INFO"
         - name: KAFKA_OPTS
           value: "-javaagent:/opt/jmx_prometheus_javaagent-0.3.1.jar=7071:/opt/kafka-2_0_0.yaml"
         resources:
           requests:
             memory: "1Gi"
-            cpu: "0.1"
+            cpu: "0.5"
         ports:
         - containerPort: 9092
           name: client
@@ -111,7 +113,7 @@ spec:
         - "KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-${HOSTNAME##*-}.kafka-broker.kafka-test.svc.cluster.local:9092 KAFKA_BROKER_ID=${HOSTNAME##*-} /etc/confluent/docker/run"
         volumeMounts:
         - name: datadir
-          mountPath: /var/lib/kafka
+          mountPath: /var/lib/kafka/data
       securityContext:
         runAsUser: 1000
         fsGroup: 1000

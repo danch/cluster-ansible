@@ -101,6 +101,8 @@ spec:
         env:
         - name: "SERVER_JVMFLAGS"
           value: "-javaagent:/opt/jmx_prometheus_javaagent-0.3.1.jar=7071:/opt/zookeeper.yaml"
+        - name: "KAFKA_LOG4J_ROOT_LOGLEVEL"
+          value: "WARN"
         command:
         - sh
         - -c
