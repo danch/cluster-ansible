@@ -3,12 +3,20 @@ all:
     kube:
       hosts:
         opti:
-          host_interface: enp0s25
         congratulations:
-          host_interface: enp3s0
         rice:
-          host_interface: enp37s0
+        andy:
+    kube-master:
+      hosts:
+        opti:
+        congratulations:
+        rice:
     proxy:
+      hosts:
+        opti:
+        congratulations:
+        rice:
+    storage:
       hosts:
         opti:
         congratulations:

@@ -5,7 +5,7 @@
     src: kubernetes.repo
     dest: /etc/yum.repos.d/kubernetes.repo
 
-- name: disable selinux
+- name: disable selinux for next boot
   become: true
   selinux:
     state: disabled
@@ -97,13 +97,14 @@
     source: 192.168.1.0/24
     state: enabled
   become: true
-- firewalld:
+#- name: allow docker0 interface
+#  firewalld:
 #    immediate: true
-    permanent: true
-    interface: docker0
-    zone: trusted
-    state: enabled
-  become: true
+#  permanent: true
+#    interface: docker0
+#    zone: trusted
+#    state: enabled
+#  become: true
 
 - name: install kubelet
   become: true

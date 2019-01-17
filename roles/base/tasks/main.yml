@@ -1,0 +1,66 @@
+- name: ensure yum-config-manager is available
+  become: yes
+  yum:
+    name: yum-utils
+    state: present
+
+- name: Check if EPEL repo is already configured.
+  stat: path="/etc/yum.repos.d/epel.repo"
+  register: epel_repofile_result
+
+- name: Install EPEL repo.
+  become: yes
+  yum:
+    name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+    state: present
+  register: result
+  until: 'result.rc == 0'
+  retries: 5
+  delay: 10
+  when: not epel_repofile_result.stat.exists
+
+- name: Imporpt EPEL GPG key.
+  become: yes
+  rpm_key:
+    key: "/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
+    state: present
+  when: not epel_repofile_result.stat.exists
+  ignore_errors: "{{ ansible_check_mode }}"
+  
+- name: Install htop
+  become: yes
+  yum:
+    name: htop
+    state: present
+  
+- name: Install atop
+  become: yes
+  yum:
+    name: atop
+    state: present
+  
+- name: Install iotop
+  become: yes
+  yum:
+    name: iotop
+    state: present
+  
+- name: Install sensors
+  become: yes
+  yum:
+    name: lm_sensors
+    state: present
+  
+- name: Install net-tools
+  become: yes
+  yum:
+    name: net-tools
+    state: present
+
+- name: set max_map to 256k
+  become: yes
+  sysctl:
+    name: vm.max_map_count
+    value: 262144
+    state: present
+    reload: yes

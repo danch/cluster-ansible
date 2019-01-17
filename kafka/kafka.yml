@@ -103,7 +103,7 @@ spec:
         resources:
           requests:
             memory: "1Gi"
-            cpu: "0.5"
+            cpu: "1.0"
         ports:
         - containerPort: 9092
           name: client

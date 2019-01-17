@@ -1,9 +1,3 @@
-- name: ensure yum-config-manager is available
-  become: yes
-  yum:
-    name: yum-utils
-    state: present
-
 - name: Add docker yum repository
   become: yes
   command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
@@ -21,6 +15,13 @@
     #- name: set docker-compose executable
     #  become: yes
     #  file: dest=/usr/local/bin/docker-compose mode=a+x
+
+- name: ensure etc/docker exists
+  become: yes
+  file:
+    path: /etc/docker
+    state: directory
+    mode: 0700
 
 - name: install daemon.json file
   become: yes

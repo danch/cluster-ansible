@@ -46,6 +46,10 @@ data:
     - type: docker
       containers.ids:
       - "*"
+      multiline:
+        pattern: '^[[:space:]]'
+        negate: false
+        match: after
       processors:
         - add_kubernetes_metadata:
             in_cluster: true

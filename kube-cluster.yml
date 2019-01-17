@@ -7,15 +7,23 @@
       state: stopped
     become: yes
 
+- hosts: all
+  roles:
+    - base
+
 - hosts: proxy
   roles:
     - proxy
+
+- hosts: storage
+  roles:
+    - storage
 
 - hosts: kube
   roles:
     - docker
     - kubernetes
 
-- hosts: kube
+- hosts: kube-master
   roles:
     - kubeadm-ha
