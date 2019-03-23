@@ -3,10 +3,12 @@
   yum:
     name: yum-utils
     state: present
+  when: ansible_distribution == 'Centos'
 
 - name: Check if EPEL repo is already configured.
   stat: path="/etc/yum.repos.d/epel.repo"
   register: epel_repofile_result
+  when: ansible_distribution == 'Centos'
 
 - name: Install EPEL repo.
   become: yes
@@ -17,43 +19,58 @@
   until: 'result.rc == 0'
   retries: 5
   delay: 10
-  when: not epel_repofile_result.stat.exists
+  when: ansible_distribution == 'Centos' and not epel_repofile_result.stat.exists
 
-- name: Imporpt EPEL GPG key.
+- name: Import EPEL GPG key.
   become: yes
   rpm_key:
     key: "/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
     state: present
-  when: not epel_repofile_result.stat.exists
+  when: ansible_distribution == 'Centos' and not epel_repofile_result.stat.exist
   ignore_errors: "{{ ansible_check_mode }}"
-  
+
+- name: Install https transport for apt
+  become: yes
+  package:
+    name: apt-transport-https
+    state: present
+  when: ansible_distribution == 'Ubuntu'
+
 - name: Install htop
   become: yes
-  yum:
+  package:
     name: htop
     state: present
   
 - name: Install atop
   become: yes
-  yum:
+  package:
     name: atop
     state: present
   
 - name: Install iotop
   become: yes
-  yum:
+  package:
     name: iotop
     state: present
   
 - name: Install sensors
   become: yes
-  yum:
+  package:
     name: lm_sensors
     state: present
+  when: ansible_distribution == 'Centos'
+  
+- name: Install sensors
+  become: yes
+  package:
+    name: lm-sensors
+    state: present
+  when: ansible_distribution == 'Ubuntu'
   
 - name: Install net-tools
   become: yes
-  yum:
+  package:
     name: net-tools
     state: present
 

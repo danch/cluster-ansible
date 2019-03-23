@@ -6,6 +6,7 @@
       enabled: no
       state: stopped
     become: yes
+    when: ansible_distribution == 'Centos'
 
 - hosts: all
   roles:
