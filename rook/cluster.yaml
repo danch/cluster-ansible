@@ -74,12 +74,12 @@ spec:
   resources:
 #    osd:
 #      requests:
-#        cpu: 500m
-#        memory: 1G
-#    mon:
-#      requests:
-#        cpu: 100m
-#        memory: 256M
+#        cpu: "500m"
+#        memory: "1Gi"
+    mon:
+      requests:
+        cpu: "100m"
+        memory: "256M"
   storage: # cluster level storage configuration and selection
     useAllNodes: false
     useAllDevices: false
@@ -99,5 +99,5 @@ spec:
       devices: 
       - name: "sdb"
     - name: "rice"
-      devices: # specific devices to use for storage can be specified for each node
+      devices: 
       - name: "sdb"

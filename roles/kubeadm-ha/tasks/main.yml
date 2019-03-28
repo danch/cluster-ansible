@@ -1,5 +1,0 @@
----
-- name: copy kubeadm config
-  copy:
-    src: files/kubeadm-config-{{inventory_hostname}}.yaml
-    dest: /tmp/kubeadm-config.yaml

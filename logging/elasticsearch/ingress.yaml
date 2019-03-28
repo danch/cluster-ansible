@@ -9,7 +9,7 @@ spec:
   rules:
   -
     # host: elasticsearch.minikube.localnet
-    host: elasticsearch.j9egj.k8s.ginger.eu-central-1.aws.gigantic.io
+    host: elastic.danch.home
     http:
       paths:
       - path: /

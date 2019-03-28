@@ -5,14 +5,28 @@ all:
     kube:
       hosts:
         opti:
+          ansible_host: 192.168.1.11
         congratulations:
+          ansible_host: 192.168.1.8
         rice:
+          ansible_host: 192.168.1.10
         andy:
+          ansible_host: 192.168.1.7
     kube-master:
       hosts:
         opti:
         congratulations:
         rice:
+    zero-master:
+      hosts:
+        opti:
+    other-master:
+      hosts:
+        congratulations:
+        rice:
+    worker:
+      hosts:
+        andy
     proxy:
       hosts:
         opti:
@@ -23,3 +37,7 @@ all:
         opti:
         congratulations:
         rice:
+    vip:
+      hosts:
+        kube-cluster:
+          ansible_host: 192.168.1.100

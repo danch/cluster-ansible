@@ -1,0 +1,78 @@
+---
+- name: create temporary directory
+  hosts: localhost
+  tasks:
+    - file:
+        path: "temp"
+        state: directory
+
+- name: get key and config files
+  become: yes
+  hosts: zero-master
+  tasks:
+    - fetch:
+        dest: "temp"
+        src: "/etc/kubernetes/{{ item }}"
+      with_items:
+        - "pki/ca.crt"
+        - "pki/ca.key"
+        - "pki/sa.key"
+        - "pki/sa.pub"
+        - "pki/front-proxy-ca.crt"
+        - "pki/front-proxy-ca.key"
+        - "pki/etcd/ca.crt"
+        - "pki/etcd/ca.key"
+        - "admin.conf"
+  
+- name: get join command
+  become: yes
+  hosts: "zero-master[0]"
+  tasks:
+    - command: "kubeadm token create --print-join-command"
+      register: token_output
+    - set_fact:
+        join_command: "{{ token_output.stdout_lines[0] }}"
+
+- name: debu
+  hosts: localhost
+  tasks:
+    - debug:
+        msg: "{{ hostvars[ groups['zero-master'] | first ].join_command }}"
+
+- name: push key and config to other masters
+  become: yes
+  hosts: other-master
+  tasks:
+    - file:
+        path: "/etc/kubernetes/pki/etcd"
+        state: directory
+
+    - copy:
+        src: "temp/{{ hostvars[ groups['zero-master'] | first ].inventory_hostname }}/etc/kubernetes/{{ item }}"
+        dest: "/etc/kubernetes/{{ item }}"
+      with_items:
+        - "pki/ca.crt"
+        - "pki/ca.key"
+        - "pki/sa.key"
+        - "pki/sa.pub"
+        - "pki/front-proxy-ca.crt"
+        - "pki/front-proxy-ca.key"
+        - "pki/etcd/ca.crt"
+        - "pki/etcd/ca.key"
+        - "admin.conf"
+
+- name: init other masters
+  become: yes
+  hosts: other-master
+  serial: 1
+  tasks:
+    - command: "{{ hostvars[ groups['zero-master'] | first ].join_command }} --experimental-control-plane "
+
+- name: init workers
+  become: yes
+  hosts: worker
+  serial: 1
+  tasks:
+    - command: "{{ hostvars[ groups['zero-master'] | first ].join_command }}"
+
+
