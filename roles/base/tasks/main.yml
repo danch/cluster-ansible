@@ -34,7 +34,19 @@
   package:
     name: apt-transport-https
     state: present
+    update_cache: yes
   when: ansible_distribution == 'Ubuntu'
+
+- name: disable swap
+  become: yes
+  shell: "swapoff -a"
+
+- name: comment all swap partitions out of fstab
+  become: yes
+  replace:
+    path: /etc/fstab
+    regexp: '^(.+?\sswap\s+sw\s+.*)$'
+    replace: '# \1'
 
 - name: Install htop
   become: yes

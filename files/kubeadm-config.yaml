@@ -3,7 +3,7 @@ kind: ClusterConfiguration
 kubernetesVersion: stable
 apiServer:
   CertSANs:
-  - "kube-cluster"
-controlPlaneEndpoint: "kube-cluster:6445"
+  - "{{ vip_name }}"
+controlPlaneEndpoint: "{{ vip_name }}:6445"
 networking:
   podSubnet: 10.244.0.0/16

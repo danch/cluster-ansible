@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: kube
   tasks:
   - systemd:
       name: firewalld
@@ -8,7 +8,7 @@
     become: yes
     when: ansible_distribution == 'Centos'
 
-- hosts: all
+- hosts: kube
   roles:
     - base
 
