@@ -1,0 +1,32 @@
+all:
+  vars:
+    ansible_python_interpreter: python3
+  children:
+    kube:
+      hosts:
+        kube01:
+          ansible_host: 192.168.1.110
+        kube02:
+          ansible_host: 192.168.1.111
+    kube-master:
+      hosts:
+        kube01:
+        kube02:
+    zero-master:
+      hosts:
+        kube01:
+    other-master:
+      hosts:
+        kube02:
+    proxy:
+      hosts:
+        kube01:
+        kube02:
+    storage:
+      hosts:
+        kube01:
+        kube02:
+    vip:
+      hosts:
+        vm-cluster:
+          ansible_host: 192.168.1.119
