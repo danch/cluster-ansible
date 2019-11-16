@@ -1,13 +1,14 @@
 ---
-- hosts: all
+- hosts: kube
   tasks:
   - systemd:
       name: firewalld
       enabled: no
       state: stopped
     become: yes
+    when: ansible_distribution == 'Centos'
 
-- hosts: all
+- hosts: kube
   roles:
     - base
 
@@ -23,7 +24,3 @@
   roles:
     - docker
     - kubernetes
-
-- hosts: kube-master
-  roles:
-    - kubeadm-ha

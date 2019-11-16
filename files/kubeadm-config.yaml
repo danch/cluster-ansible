@@ -1,0 +1,9 @@
+apiVersion: kubeadm.k8s.io/v1beta1
+kind: ClusterConfiguration
+kubernetesVersion: stable
+apiServer:
+  CertSANs:
+  - "{{ vip_name }}"
+controlPlaneEndpoint: "{{ vip_name }}:6445"
+networking:
+  podSubnet: 10.244.0.0/16

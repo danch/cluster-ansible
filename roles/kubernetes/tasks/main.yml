@@ -1,14 +1,30 @@
 
-- name: add the kubernetes repo
+- name: add the kubernetes yum repo
   become: true
   copy:
     src: kubernetes.repo
     dest: /etc/yum.repos.d/kubernetes.repo
+  when: ansible_distribution == 'Centos'
+
+- name: add kubernetes key to apt-keys
+  become: yes
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+  when: ansible_distribution == 'Ubuntu'
+
+#- name: add the kubernetes apt repo
+#  become: true
+#  apt_repository:
+#    repo: "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+#    state: present
+#  when: ansible_distribution == 'Ubuntu'
 
 - name: disable selinux for next boot
   become: true
   selinux:
     state: disabled
+  when: ansible_distribution == 'Centos'
 
 - name: disable swap
   become: true
@@ -41,6 +57,7 @@
     port: 6443/tcp
     source: 192.168.1.0/24
     state: enabled
+  when: ansible_distribution == 'Centos'
 - firewalld:
 #    immediate: true
     permanent: true
@@ -48,6 +65,7 @@
     source: 192.168.1.0/24
     state: enabled
   become: true
+  when: ansible_distribution == 'Centos'
 - firewalld:
 ##    immediate: true
     permanent: true
@@ -55,6 +73,7 @@
     source: 192.168.1.0/24
     state: enabled
   become: true
+  when: ansible_distribution == 'Centos'
 - firewalld:
 #    immediate: true
     permanent: true
@@ -62,6 +81,7 @@
     source: 192.168.1.0/24
     state: enabled
   become: true
+  when: ansible_distribution == 'Centos'
 - firewalld:
 #    immediate: true
     permanent: true
@@ -69,6 +89,7 @@
     source: 192.168.1.0/24
     state: enabled
   become: true
+  when: ansible_distribution == 'Centos'
 - firewalld:
 #    immediate: true
     permanent: true
@@ -76,6 +97,7 @@
     source: 192.168.1.0/24
     state: enabled
   become: true
+  when: ansible_distribution == 'Centos'
 - firewalld:
 #    immediate: true
     permanent: true
@@ -83,6 +105,7 @@
     source: 192.168.1.0/24
     state: enabled
   become: true
+  when: ansible_distribution == 'Centos'
 - firewalld:
 #    immediate: true
     permanent: true
@@ -90,6 +113,7 @@
     source: 192.168.1.0/24
     state: enabled
   become: true
+  when: ansible_distribution == 'Centos'
 - firewalld:
 #    immediate: true
     permanent: true
@@ -97,6 +121,7 @@
     source: 192.168.1.0/24
     state: enabled
   become: true
+  when: ansible_distribution == 'Centos'
 #- name: allow docker0 interface
 #  firewalld:
 #    immediate: true
@@ -108,20 +133,20 @@
 
 - name: install kubelet
   become: true
-  yum:
-    name: kubelet-1.12.1
+  package:
+    name: kubelet
     state: present
 
 - name: install kubeadm
   become: true
-  yum:
-    name: kubeadm-1.12.1
+  package:
+    name: kubeadm
     state: present
 
 - name: install kubectl
   become: true
-  yum:
-    name: kubectl-1.12.1
+  package:
+    name: kubectl
     state: present
 
 - name: enable kube services

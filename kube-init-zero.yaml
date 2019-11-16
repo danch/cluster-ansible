@@ -1,0 +1,21 @@
+---
+- name: copy kubeadm config to zeroth master
+  hosts: zero-master
+  vars:
+    - vip_name: "{{ groups['vip'][0] }}"
+  tasks:
+    - template:
+        src: files/kubeadm-config.yaml
+        dest: /tmp/kubeadm-config.yaml
+
+- name: init zeroth master
+  become: yes
+  hosts: zero-master
+  tasks:
+    - command: "/usr/bin/kubeadm init --config=/tmp/kubeadm-config.yaml"
+
+- name: install Flannel
+  hosts: zero-master
+  become: yes
+  tasks:
+    - command: "/usr/bin/kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml"

@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: traefik-metric
+  namespace: monitoring
+  labels:
+    team: rook
+spec:
+  namespaceSelector:
+    matchNames:
+      - kube-system
+  selector:
+    matchLabels:
+      app: traefik
+  endpoints:
+  - port: admin
+    path: /metrics
+    interval: 15s
