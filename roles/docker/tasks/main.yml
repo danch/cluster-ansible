@@ -10,13 +10,12 @@
     state: present
   when: ansible_distribution == 'Ubuntu'
 
-# TODO: make release ('cosmic') a variable
-- name: add docker apt repository
-  become: yes
-  apt_repository:
-    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu cosmic stable"
-    state: present
-  when: ansible_distribution == 'Ubuntu'
+#- name: add docker apt repository
+#  become: yes
+#  apt_repository:
+#    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{os_release}} stable"
+#    state: present
+#  when: ansible_distribution == 'Ubuntu'
 
 - name: update apt cache
   become: yes

@@ -13,12 +13,12 @@
     state: present
   when: ansible_distribution == 'Ubuntu'
 
-- name: add the kubernetes apt repo
-  become: true
-  apt_repository:
-    repo: "deb http://apt.kubernetes.io/ kubernetes-xenial main"
-    state: present
-  when: ansible_distribution == 'Ubuntu'
+#- name: add the kubernetes apt repo
+#  become: true
+#  apt_repository:
+#    repo: "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+#    state: present
+#  when: ansible_distribution == 'Ubuntu'
 
 - name: disable selinux for next boot
   become: true

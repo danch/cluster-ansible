@@ -6,12 +6,16 @@ all:
       hosts:
         opti:
           ansible_host: 192.168.1.11
+          os_release: cosmic
         congratulations:
           ansible_host: 192.168.1.8
+          os_release: cosmic
         rice:
           ansible_host: 192.168.1.10
+          os_release: cosmic
         andy:
           ansible_host: 192.168.1.7
+          os_release: disco
     kube-master:
       hosts:
         opti:
